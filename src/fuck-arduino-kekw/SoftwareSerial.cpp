@@ -34,7 +34,7 @@ http://arduiniana.org.
 // the bit times, so don't rely on it too much at high baud rates
 #define _DEBUG 0
 #define _DEBUG_PIN1 11
-#define _DEBUG_PIN2 13
+#define _DEBUG_PIN2 2
 // 
 // Includes
 // 
@@ -42,7 +42,7 @@ http://arduiniana.org.
 #include <avr/pgmspace.h>
 #include "SoftwareSerial.h"
 #include <util/delay_basic.h>
-
+#include <util/delay.h>
 //
 // Statics
 //
@@ -51,8 +51,16 @@ uint8_t SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF];
 volatile uint8_t SoftwareSerial::_receive_buffer_tail = 0;
 volatile uint8_t SoftwareSerial::_receive_buffer_head = 0;
 
+#ifdef _DEBUG
+inline void DebugPulse(uint8_t, uint8_t) {
+  PORTD |= (1 << _DEBUG_PIN2);
+  _delay_us(1);
+  PORTD &= ~(1 << _DEBUG_PIN2);
+}
+#else
+inline void DebugPulse(uint8_t, uint8_t) {};
+#endif
 
-inline void DebugPulse(uint8_t, uint8_t) {}
 
 //
 // Private methods
@@ -121,7 +129,7 @@ void SoftwareSerial::recv()
 #endif  
 
   uint8_t d = 0;
-
+  DebugPulse(0, 0);
   // If RX line is high, then we don't see any start bit
   // so interrupt is probably not for us
   if (_inverse_logic ? rx_pin_read() : !rx_pin_read())
@@ -248,17 +256,17 @@ void SoftwareSerial::setTX(uint8_t tx)
   } else {
     *_transmitPortRegister |= _transmitBitMask;
   }
-  DDRB &= ~(_transmitBitMask);
+  DDRB |= (_transmitBitMask);
 }
 
 void SoftwareSerial::setRX(uint8_t rx)
 {
   _receivePin = rx;
   _receiveBitMask = 1 << rx;
-  _receivePortRegister = &PORTB;
-  DDRB |= _receiveBitMask;
+  _receivePortRegister = &PINB;
+  DDRB &= ~_receiveBitMask;
   if (!_inverse_logic)
-    *_receivePortRegister |= _receiveBitMask; //pullup for normal logic
+    PORTB |= _receiveBitMask; //pullup for normal logic
 }
 
 uint16_t SoftwareSerial::subtract_cap(uint16_t num, uint16_t sub) {
@@ -326,23 +334,24 @@ void SoftwareSerial::begin(long speed)
   // Enable the PCINT for the entire port here, but never disable it
   // (others might also need it, so we disable the interrupt by using
   // the per-pin PCMSK register).
-  PCICR |= _BV(PCIE0);
+  PCICR |= 1 << PCIE0;
   // Precalculate the pcint mask register and value, so setRxIntMask
   // can be used inside the ISR without costing too much time.
   _pcint_maskreg = &PCMSK0;
-  _pcint_maskvalue = _BV(_receivePin);
+  _pcint_maskvalue = 1 << _receivePin;
 
   tunedDelay(_tx_delay); // if we were low this establishes the end
 
   listen();
+  sei();
 }
 
 void SoftwareSerial::setRxIntMsk(bool enable)
 {
     if (enable)
-      *_pcint_maskreg |= _pcint_maskvalue;
+      PCMSK0 |= 1 << PCINT4;
     else
-      *_pcint_maskreg &= ~_pcint_maskvalue;
+      PCMSK0 &= ~(1 << PCINT4);
 }
 
 void SoftwareSerial::end()
