@@ -14,16 +14,16 @@ void bluetoothUpdate() {
   while (bluetooth.available()) {
     // Get the new byte
     char inChar = (char)bluetooth.read();
-  if (inChar == '\r') {
+    if (inChar == '\r') {
       // Set the flag
       bluetoothStringComplete = true;
     }
     if (bluetoothStringComplete == false){// Add it to the inputString
       if (bluetoothInputSize < BLUETOOTH_BUFFER_SIZE){
-    bluetoothInputString[bluetoothInputSize++] = inChar;
-        } else {
-          bluetoothStringComplete = true;
-        }
+        bluetoothInputString[bluetoothInputSize++] = inChar;
+      } else {
+        bluetoothStringComplete = true;
+      }
     }
   }
 }
