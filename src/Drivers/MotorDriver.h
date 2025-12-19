@@ -11,10 +11,10 @@
 #define MOTOR_B_PWM (1<<2)
 
 //port expander
-#define MOTOR_A_IN1 (1<<0)
-#define MOTOR_A_IN2 (1<<1)
-#define MOTOR_B_IN3 (1<<2)
-#define MOTOR_B_IN4 (1<<3)
+#define MOTOR_A_IN1 (1<<4)
+#define MOTOR_A_IN2 (1<<5)
+#define MOTOR_B_IN3 (1<<6)
+#define MOTOR_B_IN4 (1<<7)
 
 enum MotorState {
   HALTED,   //this state turns everything off
