@@ -56,6 +56,7 @@ static void setMotorParams(bool a_in1, bool a_in2, bool b_in3, bool b_in4) {
   } else {
     portExpanderMode &= ~(MOTOR_B_IN4);
   }
+  portExpanderWrite(portExpanderMode);
 }
 
 
