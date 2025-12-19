@@ -115,9 +115,7 @@ void inputManagerUpdate() {
         parseArguments(bluetoothInputString, bluetoothInputSize);
         bluetoothStringComplete = false;
         bluetoothInputSize = 0;
-        prints("ble: ");
-        prints(bluetoothInputString);
-        prints("\r\n");
+        currentState.currentEvent = InputComplete;
     }
 
     if (strncmp(inputBuffer[0], "setS", INPUT_WORD_SIZE) == 0) {
@@ -148,14 +146,14 @@ void inputManagerUpdate() {
         flushArguments();
     } else if (strncmp(inputBuffer[0], "ss", INPUT_WORD_SIZE) == 0) {
         uint8_t val = to_int(inputBuffer[1]);
-        char buff[] = "val: xxxx\r\n";
+        char buff[] = "spd: xxxx\r\n";
         to_str(buff + 5, val);
         prints(buff);
         setMotorSpeed(val);
         flushArguments();
     } else if (strncmp(inputBuffer[0], "stf", INPUT_WORD_SIZE) == 0) {
         uint8_t val = to_int(inputBuffer[1]);
-        char buff[] = "val: xxxx\r\n";
+        char buff[] = "trn: xxxx\r\n";
         to_str(buff + 5, val);
         prints(buff);
         setMotorTurningFactor(val*0.01);

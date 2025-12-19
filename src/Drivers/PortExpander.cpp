@@ -18,7 +18,10 @@ void portExpanderWrite(uint8_t mode) {
 void portExpanderInit() {
   
   //set int pin to input pullup
-  DDRD &= ~PORT_EXPANDER_INT;
+  DDRD &= ~(PORT_EXPANDER_INT);
+  //set debug to output
+  DDRD |= PORT_EXPANDER_DEBUG;
+
   PORTD |= PORT_EXPANDER_INT;
 
   //initialize state
@@ -31,14 +34,18 @@ void portExpanderInit() {
 void portExpanderUpdate() {
  
   //request updated data from the pcf
-  if ((PIND & PORT_EXPANDER_INT == 0) && (portExpanderEvent != READ)) {
+  if (!(PIND & PORT_EXPANDER_INT) && (portExpanderEvent == NONE)) {
     Wire.requestFrom(PORT_EXPANDER_ADRES, 1);
     portExpanderEvent = READ;
+    PORTD |= PORT_EXPANDER_DEBUG;
+    _delay_us(10);
+    PORTD &= ~PORT_EXPANDER_DEBUG;
   }
   //store incoming data
   if (Wire.available() && (portExpanderEvent == READ)) {
     portExpanderData = Wire.read();
     portExpanderEvent = NONE;
+    prints("fuck\r\n");
   }
 }
 

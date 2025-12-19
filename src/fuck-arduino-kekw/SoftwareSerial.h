@@ -46,6 +46,8 @@ http://arduiniana.org.
 #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 #endif
 
+void DebugPulse(uint8_t, uint8_t);
+
 class SoftwareSerial
 {
 private:

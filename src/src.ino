@@ -14,12 +14,12 @@
 #include "Util.h"
 #include "fuck-arduino-kekw/Arduino-LiquidCrystal-I2C-library/LiquidCrystal_I2C.h"
 #include "fuck-arduino-kekw/Wire.h"
+#include "fuck-arduino-kekw/SoftwareSerial.h"
 
 //LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-
 void setup() {
-    distanceSensorInit();
+    //distanceSensorInit();
     serialInit(CALC_BAUD(9600));
     timerZeroInit();
     bluetoothInit();
@@ -38,7 +38,6 @@ void setup() {
 
 void loop() {
     //run all of the update functions
-    
     portExpanderUpdate();
     lineSensorUpdate();
     bluetoothUpdate();
@@ -50,6 +49,5 @@ void loop() {
 
 int main(void) {
     setup();
-
     while(1) { loop(); }
 }
