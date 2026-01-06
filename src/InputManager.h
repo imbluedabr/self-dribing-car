@@ -17,3 +17,4 @@ int to_int(const char* str);
 void to_str(char* str, int number);
 void printh(int number);
 
+extern const char StringStates[][16];
