@@ -15,6 +15,7 @@
 #include "fuck-arduino-kekw/Arduino-LiquidCrystal-I2C-library/LiquidCrystal_I2C.h"
 #include "fuck-arduino-kekw/Wire.h"
 #include "fuck-arduino-kekw/SoftwareSerial.h"
+#include "lcdManager.h"
 
 //LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -29,6 +30,7 @@ void setup() {
 
     lineSensorInit();
     motorDriverInit();
+    lcdInit();
     
     registerNewState(Idle, &idleState);
     registerNewState(Slave, &slaveState);
@@ -42,6 +44,7 @@ void loop() {
     lineSensorUpdate();
     bluetoothUpdate();
     inputManagerUpdate();
+    taskUpdate();
 
     //execute the current state
     runCurrentState();

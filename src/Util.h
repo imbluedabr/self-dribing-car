@@ -6,7 +6,7 @@
 #include <avr/interrupt.h>
 #include <stddef.h>
 
-#define TICKS_IN_SECONDS (ticks>>2^13);
+#define TICKS_IN_SECONDS (ticks>>13)
 #define SEC_TO_TICKS(SEC_T) (SEC_T*7812)
 #define MS_TO_TICKS(MS_T) (MS_T*8)
 
