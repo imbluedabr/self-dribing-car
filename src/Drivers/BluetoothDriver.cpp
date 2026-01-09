@@ -18,6 +18,7 @@ void bluetoothUpdate() {
       // Set the flag
       bluetoothStringComplete = true;
     }
+    prints("newC\r\n");
     if (bluetoothStringComplete == false){// Add it to the inputString
       if (bluetoothInputSize < BLUETOOTH_BUFFER_SIZE){
         bluetoothInputString[bluetoothInputSize++] = inChar;
