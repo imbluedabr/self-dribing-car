@@ -32,20 +32,29 @@ void portExpanderInit() {
 }
 
 void portExpanderUpdate() {
- 
-  //request updated data from the pcf
+
+  // request updated data from the pcf
   if (!(PIND & PORT_EXPANDER_INT) && (portExpanderEvent == NONE)) {
     Wire.requestFrom(PORT_EXPANDER_ADRES, 1);
     portExpanderEvent = READ;
+
     PORTD |= PORT_EXPANDER_DEBUG;
     _delay_us(10);
     PORTD &= ~PORT_EXPANDER_DEBUG;
   }
-  //store incoming data
-  if (Wire.available() && (portExpanderEvent == READ)) {
+
+  // store incoming data (MAX 1x per 250 ms)
+  unsigned long now = ticks;
+
+  if (Wire.available() &&
+      portExpanderEvent == READ &&
+      (now - lastReadTime >= READ_INTERVAL)) {
+
+    lastReadTime = now;        // klok resetten
     portExpanderData = Wire.read();
     portExpanderEvent = NONE;
-    prints("fuck\r\n");
+
+    prints("PortExpander read\r\n");
   }
 }
 
