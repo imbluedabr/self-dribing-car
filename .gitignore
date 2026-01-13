@@ -2,3 +2,4 @@
 src.cpp
 *.elf
 *.hex
+.vs
