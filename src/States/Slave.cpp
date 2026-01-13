@@ -5,8 +5,8 @@ void slaveState(struct State* currState){ //TODO: fix this horrible piece of shi
     setMotorState(FORWARDS);
   }
   else if (
-      (linesensor[0] && linesensor[2] || linesensor[3])
-      (linesensor[1] && linesensor[2] || linesensor[3])
+      (linesensors[0] && linesensors[2] || linesensors[3])
+      (linesensors[1] && linesensors[2] || linesensors[3])
       ) {
 	  setMotorState(FORWARDS);
   }
