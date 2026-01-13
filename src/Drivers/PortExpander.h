@@ -7,7 +7,7 @@
 #include <util/delay.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "../Utill.h"
+#include "../Util.h"
 
 #define PORT_EXPANDER_ADRES 0x20
 #define PORT_EXPANDER_INT (1 << 2)
