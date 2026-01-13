@@ -13,7 +13,7 @@ void bluetoothInit() {
 void bluetoothUpdate() {
   while (bluetooth.available()) {
     // Get the new byte
-    char inChar = (char)bluetooth.read();
+    char inChar = bluetooth.read();
     if (inChar == '\r') {  
       // Set the flag
       bluetoothStringComplete = true;
