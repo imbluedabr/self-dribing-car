@@ -1,8 +1,8 @@
 #include "PortExpander.h"
-
+       
 uint8_t portExpanderData;
 uint8_t portExpanderMode;
-
+int lastReadTime;
 enum portEvent : uint8_t {
   NONE,
   READ
@@ -28,7 +28,7 @@ void portExpanderInit() {
   portExpanderData = 0;
   portExpanderMode = 255;
   portExpanderEvent = NONE;
-
+  lastReadTime= 0;
 }
 
 void portExpanderUpdate() {
@@ -44,8 +44,8 @@ void portExpanderUpdate() {
   }
 
   // store incoming data (MAX 1x per 250 ms)
-  unsigned long now = millis();
-
+  unsigned long now = ticks;
+          
   if (Wire.available() &&
       portExpanderEvent == READ &&
       (now - lastReadTime >= READ_INTERVAL)) {
@@ -53,7 +53,7 @@ void portExpanderUpdate() {
     lastReadTime = now;        // klok resetten
     portExpanderData = Wire.read();
     portExpanderEvent = NONE;
-
+    
     prints("PortExpander read\r\n");
   }
 }

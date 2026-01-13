@@ -116,6 +116,8 @@ void inputManagerUpdate() {
         bluetoothStringComplete = false;
         bluetoothInputSize = 0;
         currentState.currentEvent = InputComplete;
+        prints(inputBuffer[0]);
+        prints("\r\n");
     }
 
     if (strncmp(inputBuffer[0], "setS", INPUT_WORD_SIZE) == 0) {
