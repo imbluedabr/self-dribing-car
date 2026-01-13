@@ -57,7 +57,7 @@ void lcdUpdate (struct Task* myTask) {
         lcd.write(*str++); //Modus aangegeven
     }
 
-    lcd.setCursor(10,0);
+    lcd.setCursor(0,1);
 
     str = lcdRichting[currentMotorState];
 
