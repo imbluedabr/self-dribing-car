@@ -44,7 +44,7 @@ void portExpanderUpdate() {
   }
 
   // store incoming data (MAX 1x per 250 ms)
-  unsigned long now = millis();
+  unsigned long now = ticks;
 
   if (Wire.available() &&
       portExpanderEvent == READ &&
