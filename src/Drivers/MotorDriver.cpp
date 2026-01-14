@@ -86,8 +86,7 @@ void setMotorTurningFactor(float newTurnFactor) {
 
 void motorDriverInit(){
   //set the motor pins to ground
-  portExpanderWrite(portExpanderMode & (~MOTOR_A_IN1 | ~MOTOR_A_IN2 | ~MOTOR_B_IN3 | ~MOTOR_B_IN4));
-
+  portExpanderWrite(portExpanderMode & ~(MOTOR_A_IN1 | MOTOR_A_IN2 | MOTOR_B_IN3 | MOTOR_B_IN4)); 
   DDRB |= MOTOR_A_PWM | MOTOR_B_PWM;
   timer1Init();
   setMotorSpeed(255);
