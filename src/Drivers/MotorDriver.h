@@ -44,6 +44,8 @@ enum MotorMode : uint8_t {
   HARD_RIGHT
 };
 
+extern enum MotorMode currentMotorMode;
+
 //set the absolute speed of the motors
 void setMotorSpeed(uint8_t speed);
 

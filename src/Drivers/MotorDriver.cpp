@@ -51,8 +51,8 @@ void setMotorParam(uint8_t channel, bool m0, bool m1) {
 }
 
 
-void MotorStateAccelerate(struct MotorStateMachine* channel) { //
-  if (targetDirection != currentDirection) {
+void MotorStateAccelerate(struct MotorStateMachine* channel) {
+  if (channel->targetDirection != channel->currentDirection) {
     channel->currentState = DECEL;
   } else {
     int16_t error = channel->targetSpeed - channel->currentSpeed;
@@ -131,8 +131,14 @@ void setMotorMode(enum MotorMode newMotorMode) {
 
 void motorDriverInit() {
   //set the motor pins to ground
-  portExpanderWrite(portExpanderMode & ~(MOTOR_A_IN1 | MOTOR_A_IN2 | MOTOR_B_IN3 | MOTOR_B_IN4)); 
+  setMotorParam(0, false, false);
+  setMotorParam(1, false, false);
+
   DDRB |= MOTOR_A_PWM | MOTOR_B_PWM;
+
+  currentMotorMode = HALTED;
+  motorBaseSpeed = 100;
+  motorTurningFactor = 128; //25%
   timer1Init();
 }
 
