@@ -28,7 +28,7 @@ void portExpanderInit() {
   portExpanderData = 0;
   portExpanderMode = 255;
   portExpanderEvent = NONE;
-  lastReadTime= 0;
+  lastReadTime = 0;
 }
 
 void portExpanderUpdate() {
@@ -47,8 +47,8 @@ void portExpanderUpdate() {
   unsigned long now = ticks;
           
   if (Wire.available() &&
-      portExpanderEvent == READ &&
-      (now - lastReadTime >= READ_INTERVAL)) {
+      (portExpanderEvent == READ) &&
+      ((now - lastReadTime) >= READ_INTERVAL)) {
 
     lastReadTime = now;        // klok resetten
     portExpanderData = Wire.read();
