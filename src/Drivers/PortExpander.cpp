@@ -47,7 +47,7 @@ void portExpanderUpdate() {
   // store incoming data (MAX 1x per 250 ms)
   if (Wire.available() &&
       (portExpanderEvent == READ) &&
-      ((ticks - lastReadTime) > READ_INTERVAL)) {
+      ((((uint16_t) ticks) - lastReadTime) > READ_INTERVAL)) {
 
     lastReadTime = ticks;        // klok resetten
     portExpanderData = Wire.read();
