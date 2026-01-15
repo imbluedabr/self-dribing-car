@@ -39,9 +39,9 @@ void lcdUpdate (struct Task* myTask) {
     
     char lcdBuffer [4];
     
-    lcd.setCursor(0,0);
-    
-    to_str (lcdBuffer, TICKS_IN_SECONDS);
+    lcd.setCursor(0, 0);
+
+    to_str(lcdBuffer, TICKS_IN_SECONDS);
     for (int i = 0; i < 4 ; i++) {
         lcd.write(lcdBuffer[i]);
     }
@@ -56,8 +56,7 @@ void lcdUpdate (struct Task* myTask) {
     while (*str != '\0') {
         lcd.write(*str++); //Modus aangegeven
     }
-
-    lcd.setCursor(16,1);
+    lcd.setCursor(0, 1);
 
     str = lcdRichting[currentMotorState];
 
