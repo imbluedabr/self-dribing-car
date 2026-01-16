@@ -1,5 +1,11 @@
 #include "MotorDriver.h"
 
+struct Task updateSFM = {
+  .interval = MS_TO_TICKS(500),
+  .lastUpdate = 0,
+  .callback = &motorDriverUpdate
+};
+
 struct MotorStateMachine channelA;
 struct MotorStateMachine channelB;
 enum MotorMode currentMotorMode;
@@ -33,23 +39,24 @@ void timer1Init() {
     ICR1 = (F_CPU / (64 * timer1_pwm_freq)) - 1;
 
 }
-
 void timer1SetPWM(uint8_t currentMotorASpeed, uint8_t currentMotorBSpeed) {
-
-    if (currentMotorASpeed == 0) OCR1A = 0;
-    else OCR1A = ICR1 / (100 / currentMotorASpeed);
-
-    if (currentMotorBSpeed == 0) OCR1B = 0;
-    else OCR1B = ICR1 / (100 / currentMotorBSpeed);
+  if (currentMotorASpeed == 0) OCR1A = 0;
+  else OCR1A = ((uint32_t)ICR1 * currentMotorASpeed) / 255;
+  if (currentMotorBSpeed == 0) OCR1B = 0;
+  else OCR1B = ((uint32_t)ICR1 * currentMotorBSpeed) / 255;
 }
-
 
 void setMotorParam(uint8_t channel, bool m0, bool m1) {
-  portExpanderMode |= (m0 << (channel*2 + 4)) | (m1 << (channel*2 + 5)); //set the bits that we need to set
-  portExpanderMode &= ~((m0 << (channel*2 + 4)) | (m1 << (channel*2 + 5)));
+  uint8_t bit0 = 4 + channel * 2;
+  uint8_t bit1 = bit0 + 1;
+  if (m0) portExpanderMode |= (1 << bit0);
+  else portExpanderMode &= ~(1 << bit0);
+  if (m1) portExpanderMode |= (1 << bit1);
+  else portExpanderMode &= ~(1 << bit1);
+  printh(portExpanderMode);
+  prints(" : PM\r\n");
   portExpanderWrite(portExpanderMode);
 }
-
 
 void MotorStateAccelerate(struct MotorStateMachine* channel) {
   if (channel->targetDirection != channel->currentDirection) {
@@ -63,7 +70,7 @@ void MotorStateAccelerate(struct MotorStateMachine* channel) {
 void MotorStateDecelerate(struct MotorStateMachine* channel) { //decelerate the motor to 0
   int16_t error = -(channel->currentSpeed);
   channel->currentSpeed += error >> ERROR_FACTOR;
-  if (error < ERROR_SHUTOFF) {
+  if (-error < ERROR_SHUTOFF) {
     channel->currentState = SETM;
   }
 }
@@ -79,6 +86,7 @@ void MotorStateSetMotor(struct MotorStateMachine* channel) {
     channel->targetSpeed = 0;
   }
   channel->currentState = ACCEL;
+  channel->currentDirection = channel->targetDirection;
 }
 
 void MotorStateUpdate(struct MotorStateMachine* channel) {
@@ -125,6 +133,9 @@ void setMotorMode(enum MotorMode newMotorMode) {
   } else if (newMotorMode == RIGHT) {
     channelA.targetSpeed = (motorBaseSpeed * (256 - motorTurningFactor)) >> 8;
     channelB.targetSpeed = (motorBaseSpeed * (256 + motorTurningFactor)) >> 8;
+  } else {
+    channelA.targetSpeed = motorBaseSpeed;
+    channelB.targetSpeed = motorBaseSpeed;
   }
   currentMotorMode = newMotorMode;
 }
@@ -138,13 +149,30 @@ void motorDriverInit() {
 
   currentMotorMode = HALTED;
   motorBaseSpeed = 100;
-  motorTurningFactor = 128; //25%
+  motorTurningFactor = 128; //50%
+  channelA.motorChannel = 0;
+  channelA.currentState = ACCEL;
+  channelA.currentDirection = STOPPED;
+  channelA.targetDirection = STOPPED;
+  channelA.currentSpeed = 0;
+  channelA.targetSpeed = 0;
+  channelB.motorChannel = 1;
+  channelB.currentState = ACCEL;
+  channelB.currentDirection = STOPPED;
+  channelB.targetDirection = STOPPED;
+  channelB.currentSpeed = 0;
+  channelB.targetSpeed = 0;
   timer1Init();
+  registerTask(&updateSFM);
 }
 
-void motorDriverUpdate() {
+void motorDriverUpdate(struct Task* tsk) {
   MotorStateUpdate(&channelA);
   MotorStateUpdate(&channelB);
+  printh(channelA.currentState);
+  prints(" : ");
+  printh(channelA.currentSpeed);
+  prints("\r\n");
   timer1SetPWM(channelA.currentSpeed, channelB.currentSpeed);
 }
 

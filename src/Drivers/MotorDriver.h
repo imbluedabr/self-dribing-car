@@ -3,6 +3,7 @@
 #include <avr/interrupt.h>
 #include <stdint.h>
 #include "PortExpander.h"
+#include "../Util.h"
 
 //motor A is the left channel and motor B is the right channel
 
@@ -61,5 +62,5 @@ void setMotorMode(enum MotorMode newMotorState);
 //initialize the driver
 void motorDriverInit();
 
-void motorDriverUpdate();
+void motorDriverUpdate(struct Task* tsk);
 
