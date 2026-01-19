@@ -167,29 +167,16 @@ void BCDConvert(char* str, uint16_t val) {
     
     uint32_t temp = 0x0;
     for (int i = 0; i < 16; i++) {
-        temp = temp << 1;
-        val & 0x8000 ? temp = temp ^ 0x1 : '0';
-        val = val << 1;
+        // Add 3 to each BCD digit >= 5
+        if ((temp & 0x000F) >= 5) temp += 0x0003;
+        if ((temp & 0x00F0) >= 0x50) temp += 0x0030;
+        if ((temp & 0x0F00) >= 0x500) temp += 0x0300;
+        if ((temp & 0xF000) >= 0x5000) temp += 0x3000;
 
-        if (((temp & 0xF) >= 0x5)) {
-            temp += 0x3;
-        }
-
-        if (((temp & 0xF0) >= 0x50)) {
-            temp += 0x30;
-        }
-
-        if (((temp & 0xF00) >= 0x500)) {
-            temp += 0x300;
-        }
-
-        if (((temp & 0xF000) >= 0x5000)) {
-            temp += 0x3000;
-        }
-
-        if (((temp & 0xF0000) >= 0x50000)) {
-            temp += 0x30000;
-        }
+        temp <<= 1;
+        temp |= (val >> 15) & 1;
+        val <<= 1;
+    }
 
 
         if (i == 15) {
