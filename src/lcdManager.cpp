@@ -6,7 +6,7 @@
 // Rij richting
 // Hoelang het aan was
 
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 16, 2, LCD_5x8DOTS);
 const char lcdRichting[][16] = {
   "HALTED",   
   "FORWARDS", 
@@ -26,6 +26,7 @@ struct Task lcdTriggerTask = {
 
 
 void lcdInit() {
+    lcd.preInit();
     lcd.init();
     lcd.backlight();
     registerTask(&lcdTriggerTask); 
