@@ -123,6 +123,7 @@ void inputManagerUpdate() {
     if (strncmp(inputBuffer[0], "setS", INPUT_WORD_SIZE) == 0) {
         for (uint8_t i = 0; i < 4; i++) {
             if (strncmp(inputBuffer[1], StringStates[i], INPUT_WORD_SIZE) == 0) {
+                prints("matched state\r\n");
                 currentState.id = (enum StateID) i;
             }
         }
@@ -158,7 +159,7 @@ void inputManagerUpdate() {
         char buff[] = "trn: xxxx\r\n";
         to_str(buff + 5, val);
         prints(buff);
-        setMotorTurningFactor(val*0.01);
+        setMotorTurningFactor(val);
         flushArguments();
     }
 }

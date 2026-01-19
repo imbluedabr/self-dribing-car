@@ -4,6 +4,6 @@ void idleState(struct State* currState){
   if (currState->currentEvent == InputComplete) {
     flushArguments();
   }
-  setMotorState(HALTED);
+  setMotorMode(HALTED);
 }
 

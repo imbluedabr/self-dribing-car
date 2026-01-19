@@ -11,15 +11,14 @@ void bluetoothInit() {
 }
 
 void bluetoothUpdate() {
-  while (bluetooth.available()) {
+  if (bluetooth.available()) {
     // Get the new byte
     char inChar = bluetooth.read();
     if (inChar == '\r') {  
       // Set the flag
       bluetoothStringComplete = true;
     }
-    if (bluetoothStringComplete == false){// Add it to the inputString
-
+    if (bluetoothStringComplete == false){ // Add it to the inputString
       if (bluetoothInputSize < BLUETOOTH_BUFFER_SIZE){
         bluetoothInputString[bluetoothInputSize++] = inChar;
       } else {
@@ -27,19 +26,14 @@ void bluetoothUpdate() {
       }
     }
   }
-  if (strncmp(bluetoothInputString, "OK+CONN", 7) == 0) {
+
+  if ((strncmp(bluetoothInputString, "OK+", 3) == 0) && (bluetoothInputSize == 7)) {
     for (uint8_t i = 0; i < BLUETOOTH_BUFFER_SIZE; i++) {
       bluetoothInputString[i] = '\0';
     }
-    prints("ble connected!\r\n");
+    prints("ble event!\r\n");
     bluetoothInputSize = 0;
-  }
-  if (strncmp(bluetoothInputString, "OK+LOSS", 7) == 0) {
-    for (uint8_t i = 0; i < BLUETOOTH_BUFFER_SIZE; i++) {
-      bluetoothInputString[i] = '\0';
-    }
-    prints("ble disconnected!\r\n");
-    bluetoothInputSize = 0;
+    bluetoothStringComplete = false;
   }
 }
 
