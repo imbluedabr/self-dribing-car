@@ -164,3 +164,28 @@ void inputManagerUpdate() {
     }
 }
 
+void BCDConvert(char* str, uint16_t val) {
+    
+    uint32_t temp = 0x0;
+    for (int i = 0; i < 16; i++) {
+        // Add 3 to each BCD digit >= 5
+        if ((temp & 0x000F) >= 5) temp += 0x0003;
+        if ((temp & 0x00F0) >= 0x50) temp += 0x0030;
+        if ((temp & 0x0F00) >= 0x500) temp += 0x0300;
+        if ((temp & 0xF000) >= 0x5000) temp += 0x3000;
+
+        temp <<= 1;
+        temp |= (val >> 15) & 1;
+        val <<= 1;
+    }
+
+
+        if (i == 15) {
+            *str++ = ((temp & 0xF0000) >> 16) + 48;
+			*str++ = ((temp & 0xF000) >> 12) + 48;
+			*str++ = ((temp & 0xF00) >> 8) + 48;
+			*str++ = ((temp & 0xF0) >> 4) + 48;
+			*str = (temp & 0xF) + 48;
+        }
+    }
+}
