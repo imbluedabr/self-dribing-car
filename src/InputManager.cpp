@@ -171,23 +171,23 @@ void BCDConvert(char* str, uint16_t val) {
         val & 0x8000 ? temp = temp ^ 0x1 : '0';
         val = val << 1;
 
-        if (((temp & 0xF) >= 0x4)) {
+        if (((temp & 0xF) >= 0x5)) {
             temp += 0x3;
         }
 
-        if (((temp & 0xF0) >= 0x40)) {
+        if (((temp & 0xF0) >= 0x50)) {
             temp += 0x30;
         }
 
-        if (((temp & 0xF00) >= 0x400)) {
+        if (((temp & 0xF00) >= 0x500)) {
             temp += 0x300;
         }
 
-        if (((temp & 0xF000) >= 0x4000)) {
+        if (((temp & 0xF000) >= 0x5000)) {
             temp += 0x3000;
         }
 
-        if (((temp & 0xF0000) >= 0x40000)) {
+        if (((temp & 0xF0000) >= 0x50000)) {
             temp += 0x30000;
         }
 
