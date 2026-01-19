@@ -191,12 +191,8 @@ void BCDConvert(char* str, uint16_t val) {
             temp += 0x30000;
         }
 
-        if (((temp & 0xF00000) >= 0x400000)) {
-            temp += 0x300000;
-        }
 
         if (i == 15) {
-            *str++ = ((temp & 0xF00000) >> 20) + 48;
             *str++ = ((temp & 0xF0000) >> 16) + 48;
 			*str++ = ((temp & 0xF000) >> 12) + 48;
 			*str++ = ((temp & 0xF00) >> 8) + 48;
