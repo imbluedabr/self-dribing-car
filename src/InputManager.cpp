@@ -176,8 +176,6 @@ void BCDConvert(char* str, uint16_t val) {
         temp <<= 1;
         temp |= (val >> 15) & 1;
         val <<= 1;
-    }
-
 
         if (i == 15) {
             *str++ = ((temp & 0xF0000) >> 16) + 48;
