@@ -3,15 +3,15 @@
 void remoteControlState(struct State* currState){
   if (currState->currentEvent == InputComplete){
     if (strncmp(inputBuffer[0], "w", 1) == 0){
-      setMotorState(FORWARDS);
+      setMotorMode(FORWARDS);
     } else if (strncmp(inputBuffer[0], "a", 1) == 0) {
-      setMotorState(LEFT);
+      setMotorMode(LEFT);
     } else if (strncmp(inputBuffer[0], "d", 1) == 0) {
-      setMotorState(RIGHT);
+      setMotorMode(RIGHT);
     } else if (strncmp(inputBuffer[0], "s", 1) == 0) {
-      setMotorState(BACKWARDS);     
+      setMotorMode(BACKWARDS);     
     } else if (strncmp(inputBuffer[0], "halt", 4) == 0){
-      setMotorState(HALTED);
+      setMotorMode(HALTED);
     } else {
       prints("unkown command\r\n");
     }
