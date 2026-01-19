@@ -2,25 +2,25 @@
 
 void slaveState(struct State* currState){ //TODO: fix this horrible piece of shit
   if (!lineSensors[0] && !lineSensors[1] && !lineSensors[2] && !lineSensors[3] ){
-    setMotorState(FORWARDS);
+    setMotorMode(FORWARDS);
   }
   else if (
       (lineSensors[0] && (lineSensors[2] || lineSensors[3])) ||
       (lineSensors[1] && (lineSensors[2] || lineSensors[3]))
       ) {
-	  setMotorState(FORWARDS);
+	  setMotorMode(FORWARDS);
   }
   else if (lineSensors[1] == 1) {
-    setMotorState(LEFT);
+    setMotorMode(LEFT);
   }
   else if(lineSensors[0] == 1){
-    setMotorState(HARD_LEFT);
+    setMotorMode(HARD_LEFT);
   }
   else if(lineSensors[2] == 1){
-    setMotorState(RIGHT);
+    setMotorMode(RIGHT);
   }
    else if(lineSensors[3] == 1){
-    setMotorState(HARD_RIGHT);
+    setMotorMode(HARD_RIGHT);
   } 
  
   if (middleDistance_cm <20){

@@ -159,7 +159,7 @@ void inputManagerUpdate() {
         char buff[] = "trn: xxxx\r\n";
         to_str(buff + 5, val);
         prints(buff);
-        setMotorTurningFactor(val*0.01);
+        setMotorTurningFactor(val);
         flushArguments();
     }
 }
