@@ -2,7 +2,7 @@
        
 uint8_t portExpanderData;
 uint8_t portExpanderMode;
-int lastReadTime;
+uint16_t lastReadTime;
 enum portEvent : uint8_t {
   NONE,
   READ
@@ -44,17 +44,15 @@ void portExpanderUpdate() {
   }
 
   // store incoming data (MAX 1x per 250 ms)
-  unsigned long now = ticks;
-          
   if (Wire.available() &&
-      portExpanderEvent == READ &&
-      (now - lastReadTime >= READ_INTERVAL)) {
+      (portExpanderEvent == READ) &&
+      ((ticks - lastReadTime) > READ_INTERVAL)) {
 
-    lastReadTime = now;        // klok resetten
+    lastReadTime = ticks;        // klok resetten
     portExpanderData = Wire.read();
     portExpanderEvent = NONE;
     
-    prints("PortExpander read\r\n");
+    prints("PE rd\r\n");
   }
 }
 
