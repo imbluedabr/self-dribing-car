@@ -17,4 +17,6 @@ int to_int(const char* str);
 void to_str(char* str, int number);
 void printh(int number);
 
+void BCDConvert(char* str, uint16_t val);
+
 extern const char StringStates[][16];
