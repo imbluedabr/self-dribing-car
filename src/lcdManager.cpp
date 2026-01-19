@@ -39,10 +39,11 @@ void lcdInit() {
 void lcdUpdate (struct Task* myTask) {
     
     char lcdBuffer [4];
-    
+    int totalSeconds;
+	int Hours, Minutes, remainingSeconds;
     lcd.setCursor(0, 0);
 
-    to_str(lcdBuffer, TICKS_IN_SECONDS);
+    BCDConvert(lcdBuffer, TICKS_IN_SECONDS);
     for (int i = 0; i < 4 ; i++) {
         lcd.write(lcdBuffer[i]);
     }
