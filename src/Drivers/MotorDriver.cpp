@@ -171,10 +171,6 @@ void motorDriverInit() {
 void motorDriverUpdate(struct Task* tsk) {
   MotorStateUpdate(&channelA);
   MotorStateUpdate(&channelB);
-  printh(channelA.currentState);
-  prints(" : ");
-  printh(channelA.currentSpeed);
-  prints("\r\n");
   timer1SetPWM(channelA.currentSpeed, channelB.currentSpeed);
 }
 

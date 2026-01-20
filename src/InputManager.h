@@ -3,6 +3,7 @@
 #include "Drivers/SerialDriver.h"
 #include "Drivers/MotorDriver.h"
 #include "MainStateMachine.h"
+#include "Util.h"
 
 #define INPUT_WORD_SIZE 16
 #define INPUT_MAX_ARGS 2

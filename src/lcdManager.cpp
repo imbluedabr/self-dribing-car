@@ -6,7 +6,7 @@
 // Rij richting
 // Hoelang het aan was
 
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 16, 2, LCD_5x8DOTS);
 const char lcdRichting[][16] = {
   "HALTED",   
   "FORWARDS", 
@@ -26,6 +26,7 @@ struct Task lcdTriggerTask = {
 
 
 void lcdInit() {
+    lcd.preInit();
     lcd.init();
     lcd.backlight();
     registerTask(&lcdTriggerTask); 
@@ -33,12 +34,15 @@ void lcdInit() {
 
 }
 
-
+void lcdPrint(char* str) {
+    while (*str != '\0') {
+        lcd.write(*str++); //Modus aangegeven
+    }
+}
 
 void lcdUpdate (struct Task* myTask) {
     
     char lcdBuffer [4];
-    
     lcd.setCursor(0, 0);
 
     to_str(lcdBuffer, TICKS_IN_SECONDS);
@@ -52,18 +56,15 @@ void lcdUpdate (struct Task* myTask) {
     lcd.write(' ');
 
     const char *str = StringStates[currentState.id];
-
-    while (*str != '\0') {
-        lcd.write(*str++); //Modus aangegeven
-    }
+	char stateBuffer[17] = "                ";
+    memcpy(&stateBuffer, (char*) str, strnlen(str, 16));
+    lcdPrint(stateBuffer);
     lcd.setCursor(0, 1);
 
     str = lcdRichting[currentMotorMode];
-
-    while (*str != '\0') {
-        lcd.write(*str++); //Modus aangegeven
-        
-    }
+	char directionBuffer[17] = "                ";
+    memcpy(&directionBuffer, (char*)str, strnlen(str, 16));
+    lcdPrint(directionBuffer);
 
 
 
