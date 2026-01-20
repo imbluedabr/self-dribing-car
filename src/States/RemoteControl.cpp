@@ -4,7 +4,7 @@ void remoteControlState(struct State* currState) {
 
     if (currState->currentEvent == InputComplete) {
 
-        char cmd = inputBuffer[0][0]; // eerste karakter
+        char cmd = inputBuffer[0][0];  // eerste karakter
 
         switch (cmd) {
 
@@ -24,8 +24,15 @@ void remoteControlState(struct State* currState) {
                 setMotorMode(BACKWARDS);
                 break;
 
+            case 'q':
+                setMotorMode(BRIGHT);   // als zo heet
+                break;
+
+            case 'e':
+                setMotorMode(BLEFT);
+                break;
+
             case 'h':
-                // volledige check voor "halt"
                 if (strncmp(inputBuffer[0], "halt", 4) == 0) {
                     setMotorMode(HALTED);
                 } else {
@@ -41,4 +48,5 @@ void remoteControlState(struct State* currState) {
         flushArguments();
     }
 }
+
 
