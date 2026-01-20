@@ -1,7 +1,7 @@
 #include "MotorDriver.h"
 
 struct Task updateSFM = {
-  .interval = MS_TO_TICKS(500),
+  .interval = MS_TO_TICKS(100),
   .lastUpdate = 0,
   .callback = &motorDriverUpdate
 };
@@ -10,12 +10,14 @@ struct MotorStateMachine channelA;
 struct MotorStateMachine channelB;
 enum MotorMode currentMotorMode;
 
-const enum Direction controlMap[7][2] = {
+const enum Direction controlMap[9][2] = {
   {STOPPED, STOPPED},
   {FORWARD, FORWARD},
   {BACKWARD, BACKWARD},
   {FORWARD, FORWARD},
   {FORWARD, FORWARD},
+  {BACKWARD, BACKWARD},
+  {BACKWARD, BACKWARD},
   {BACKWARD, FORWARD},
   {FORWARD, BACKWARD}
 };
@@ -127,10 +129,10 @@ void setMotorTurningFactor(uint8_t newTurnFactor) {
 void setMotorMode(enum MotorMode newMotorMode) {
   channelA.targetDirection = controlMap[newMotorMode][0];
   channelB.targetDirection = controlMap[newMotorMode][1];
-  if (newMotorMode == LEFT) {
+  if ((newMotorMode == LEFT) || (newMotorMode == BLEFT)) {
     channelA.targetSpeed = (motorBaseSpeed * (256 + motorTurningFactor)) >> 8;
     channelB.targetSpeed = (motorBaseSpeed * (256 - motorTurningFactor)) >> 8;
-  } else if (newMotorMode == RIGHT) {
+  } else if ((newMotorMode == RIGHT) || (newMotorMode == BRIGHT)) {
     channelA.targetSpeed = (motorBaseSpeed * (256 - motorTurningFactor)) >> 8;
     channelB.targetSpeed = (motorBaseSpeed * (256 + motorTurningFactor)) >> 8;
   } else {
