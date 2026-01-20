@@ -63,6 +63,7 @@ void lcdUpdate (struct Task* myTask) {
 
     str = lcdRichting[currentMotorMode];
 	char directionBuffer[17] = "                ";
+    memcpy(&directionBuffer, (char*)str, strnlen(str, 16));
     lcdPrint(directionBuffer);
 
 
