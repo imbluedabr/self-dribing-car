@@ -51,13 +51,13 @@ void lcdUpdate (struct Task* myTask) {
     BCDConvert(lcdBuffer + 3, minutes);
 	BCDConvert(lcdBuffer + 6, remainder);
 
-    str = lcdRichting[currentMotorMode];
+    const char *str = lcdRichting[currentMotorMode];
     memcpy(&lcdBuffer + 8, (char*)str, strnlen(str, 16));
     lcdPrint(lcdBuffer);
 
     lcd.setCursor(0, 1);
-    const char *str = StringStates[currentState.id];
-	stateBuffer[17] = "                ";
+    str = StringStates[currentState.id];
+	char stateBuffer[17] = "                ";
     memcpy(&stateBuffer, (char*) str, strnlen(str, 16));
     lcdPrint(stateBuffer);
 
