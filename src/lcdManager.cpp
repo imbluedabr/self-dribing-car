@@ -36,7 +36,8 @@ void lcdInit() {
 
 void lcdPrint(char* str) {
     while (*str != '\0') {
-    lcd.write(*str++); //Modus aangegeven
+        lcd.write(*str++); //Modus aangegeven
+    }
 }
 
 void lcdUpdate (struct Task* myTask) {
