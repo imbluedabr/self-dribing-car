@@ -38,7 +38,7 @@ void setup() {
     registerNewState(RemoteControl, &remoteControlState);
     registerNewState(Autonomous, &autonomousState);
     BCDConvert(convertTest, 69);
-    printS(convertTest)
+    printS(convertTest);
     
 }
 
