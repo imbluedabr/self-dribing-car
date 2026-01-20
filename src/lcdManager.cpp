@@ -54,7 +54,7 @@ void lcdUpdate (struct Task* myTask) {
 	BCDConvert(lcdBuffer + 6, remainder);
 
     const char *str = lcdRichting[currentMotorMode];
-    memcpy(&lcdBuffer, (char*)str, strnlen(str, 16));
+    memcpy(lcdBuffer + 8, (char*)str, strnlen(str, 16));
     lcdPrint(lcdBuffer);
 
     lcd.setCursor(0, 1);
