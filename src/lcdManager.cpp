@@ -8,13 +8,15 @@
 
 LiquidCrystal_I2C lcd(0x27, 16, 2, LCD_5x8DOTS);
 const char lcdRichting[][16] = {
-  "HALTED",   
-  "FORWARDS", 
-  "BACKWARDS",
-  "LEFT",     
-  "RIGHT",    
-  "HARD_LEFT",
-  "HARD_RIGHT"
+  "HALTED",
+  "FRWRD",
+  "BCKWRD",
+  "LEFT",
+  "RIGHT",
+  "BLEFT",
+  "BRIGHT",    
+  "HRDLEFT",
+  "HRDRIGHT"
 };
 
 
@@ -41,34 +43,25 @@ void lcdPrint(char* str) {
 }
 
 void lcdUpdate (struct Task* myTask) {
-    
-    char lcdBuffer [4];
+    int remainder = TICKS_IN_SECONDS % 3600;
+	int minutes = remainder / 60;
+	remainder = remainder % 60;
+	int hours = TICKS_IN_SECONDS / 3600;
+    char lcdBuffer [17] = "xx:xx:xx        ";
     lcd.setCursor(0, 0);
+    BCDConvert(lcdBuffer, hours);
+    BCDConvert(lcdBuffer + 3, minutes);
+	BCDConvert(lcdBuffer + 6, remainder);
 
-    to_str(lcdBuffer, TICKS_IN_SECONDS);
-    for (int i = 0; i < 4 ; i++) {
-        lcd.write(lcdBuffer[i]);
-    }
+    const char *str = lcdRichting[currentMotorMode];
+    memcpy(lcdBuffer + 9, (char*)str, strnlen(str, 16));
+    lcdPrint(lcdBuffer);
 
-
-
-
-    lcd.write(' ');
-
-    const char *str = StringStates[currentState.id];
+    lcd.setCursor(0, 1);
+    str = StringStates[currentState.id];
 	char stateBuffer[17] = "                ";
     memcpy(&stateBuffer, (char*) str, strnlen(str, 16));
     lcdPrint(stateBuffer);
-    lcd.setCursor(0, 1);
 
-    str = lcdRichting[currentMotorMode];
-	char directionBuffer[17] = "                ";
-    memcpy(&directionBuffer, (char*)str, strnlen(str, 16));
-    lcdPrint(directionBuffer);
-
-
-
-
-    
 }
 
