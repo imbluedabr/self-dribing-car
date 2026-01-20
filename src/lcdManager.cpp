@@ -45,7 +45,7 @@ void lcdUpdate (struct Task* myTask) {
 	int minutes = remainder / 60;
 	remainder = remainder % 60;
 	int hours = TICKS_IN_SECONDS / 3600;
-    char lcdBuffer [17] = "xx:xx:xx        ";
+    char lcdBuffer [17] = "xx:xx:xxxxxxxxxx";
     lcd.setCursor(0, 0);
     BCDConvert(lcdBuffer, hours);
     BCDConvert(lcdBuffer + 3, minutes);
