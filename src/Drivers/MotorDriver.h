@@ -24,7 +24,7 @@ enum Direction : uint8_t {
 };
 
 #define ERROR_FACTOR 1
-#define ERROR_SHUTOFF 10
+#define ERROR_SHUTOFF 20
 
 struct MotorStateMachine {
   uint8_t targetSpeed;
@@ -37,10 +37,12 @@ struct MotorStateMachine {
 
 enum MotorMode : uint8_t {
   HALTED,   //this state turns everything off
-  FORWARDS, 
+  FORWARDS, //can do gradual turn by changing turn factor to aw non zero value
   BACKWARDS,
-  LEFT,     //this state does a gradual left turn
-  RIGHT,    //this does a gradual right turn
+  LEFT,
+  RIGHT,
+  BLEFT,
+  BRIGHT,
   HARD_LEFT,//this does an in place turn
   HARD_RIGHT
 };
