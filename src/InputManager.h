@@ -10,7 +10,6 @@
 extern char inputBuffer[INPUT_MAX_ARGS][INPUT_WORD_SIZE];
 extern unsigned char argumentCount;
 void flushArguments();
-int strncmp( const char * s1, const char * s2, unsigned int n );
 void inputManagerUpdate();
 
 void prints(const char* str);
