@@ -12,7 +12,9 @@ const char lcdRichting[][16] = {
   "FORWARDS", 
   "BACKWARDS",
   "LEFT",     
-  "RIGHT",    
+  "RIGHT",
+  "BLEFT",
+  "BRIGHT",
   "HARD_LEFT",
   "HARD_RIGHT"
 };
