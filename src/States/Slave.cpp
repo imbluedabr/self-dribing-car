@@ -7,10 +7,10 @@ void slaveState(struct State* currState){ //TODO: fix this horrible piece of shi
     flushArguments();
   }
   
-  if (lineSensors[0]) {
-    setMotorMode(HARD_RIGHT);
-  } else if (lineSensors[3]) {
-    setMotorMode(HARD_LEFT);
+  if (lineSensors[0] | lineSensors[1]) {
+    setMotorMode(RIGHT);
+  } else if (lineSensors[3] | lineSensors[2]) {
+    setMotorMode(LEFT);
   } else {
     setMotorMode(FORWARDS);
   }
