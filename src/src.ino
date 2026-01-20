@@ -20,6 +20,7 @@
 //LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
+    char convertTest[16];
     //distanceSensorInit();
     serialInit(CALC_BAUD(9600));
     timerZeroInit();
@@ -36,6 +37,8 @@ void setup() {
     registerNewState(Slave, &slaveState);
     registerNewState(RemoteControl, &remoteControlState);
     registerNewState(Autonomous, &autonomousState);
+    BCDConvert(convertTest, 69);
+    printS(convertTest)
     
 }
 
