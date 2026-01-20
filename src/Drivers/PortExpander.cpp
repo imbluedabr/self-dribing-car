@@ -52,8 +52,6 @@ void portExpanderUpdate() {
     lastReadTime = ticks;        // klok resetten
     portExpanderData = Wire.read();
     portExpanderEvent = NONE;
-    
-    prints("PE rd\r\n");
   }
 }
 

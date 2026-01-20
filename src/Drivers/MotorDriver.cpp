@@ -1,7 +1,7 @@
 #include "MotorDriver.h"
 
 struct Task updateSFM = {
-  .interval = MS_TO_TICKS(100),
+  .interval = MS_TO_TICKS(10),
   .lastUpdate = 0,
   .callback = &motorDriverUpdate
 };
@@ -65,14 +65,24 @@ void MotorStateAccelerate(struct MotorStateMachine* channel) {
     channel->currentState = DECEL;
   } else {
     int16_t error = channel->targetSpeed - channel->currentSpeed;
-    channel->currentSpeed += error >> ERROR_FACTOR;
+    if (error > MAX_ACCEL) {
+        error = MAX_ACCEL;
+    } else if (error < -MAX_ACCEL) {
+        error = -MAX_ACCEL;
+    }
+    channel->currentSpeed += error;
   }
 }
 
 void MotorStateDecelerate(struct MotorStateMachine* channel) { //decelerate the motor to 0
-  int16_t error = -(channel->currentSpeed);
-  channel->currentSpeed += error >> ERROR_FACTOR;
-  if (-error < ERROR_SHUTOFF) {
+  int16_t error = -channel->currentSpeed;
+  if (error > MAX_ACCEL) {
+    error = MAX_ACCEL;
+  } else if (error < -MAX_ACCEL) {
+    error = -MAX_ACCEL;
+  }
+  channel->currentSpeed += error;
+  if (channel->currentSpeed < 20) {
     channel->currentState = SETM;
   }
 }
