@@ -12,23 +12,19 @@ static volatile unsigned char serialTxTail;
 //shouldnt this be atomic??
 ISR(USART_RX_vect) {
 
-  if (serialInputSize < SERIAL_RX_BUFFER_SIZE) {
-    char inChar = UDR0;
+  char inChar = UDR0;
 
-    if (inChar == '\r') {
-      serialTransmit('\r');
-      serialTransmit('\n');
-      serialInputComplete = true;
-    } else {
-      serialTransmit(inChar);
-    }
+  if (inChar == '\r') {
+    serialTransmit('\r');
+    serialTransmit('\n');
+    serialInputComplete = true;
+  } else {
+    serialTransmit(inChar);
+  }
 
-    if (serialInputComplete == false) {
-      serialInputBuffer[serialInputSize] = inChar;
-      serialInputSize++;
-    } else {
-      serialInputComplete = true;
-    }
+  if (serialInputComplete == false) {
+    serialInputBuffer[serialInputSize] = inChar;
+    serialInputSize = (serialInputSize + 1) & SERIAL_RX_BUFFER_MASK;
   }
 }
 
