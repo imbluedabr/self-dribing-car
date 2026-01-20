@@ -57,7 +57,7 @@ void lcdUpdate (struct Task* myTask) {
 
     const char *str = StringStates[currentState.id];
 	char stateBuffer[17] = "                ";
-    memcpy(&stateBuffer, str, strlen(str))
+    memcpy(&stateBuffer, (char*) str, strnlen(str, 16));
     lcdPrint(stateBuffer);
     lcd.setCursor(0, 1);
 
