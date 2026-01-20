@@ -9,12 +9,12 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2, LCD_5x8DOTS);
 const char lcdRichting[][16] = {
   "HALTED",   
-  "FORWARDS", 
-  "BACKWARDS",
+  "FRWRD", 
+  "BCKWRD",
   "LEFT",     
   "RIGHT",    
-  "HARD_LEFT",
-  "HARD_RIGHT"
+  "HRDLEFT",
+  "HRDRIGHT"
 };
 
 
@@ -45,14 +45,14 @@ void lcdUpdate (struct Task* myTask) {
 	int minutes = remainder / 60;
 	remainder = remainder % 60;
 	int hours = TICKS_IN_SECONDS / 3600;
-    char lcdBuffer [17] = "xx:xx:xxxxxxxxxx";
+    char lcdBuffer [17] = "xx:xx:xx        ";
     lcd.setCursor(0, 0);
     BCDConvert(lcdBuffer, hours);
     BCDConvert(lcdBuffer + 3, minutes);
 	BCDConvert(lcdBuffer + 6, remainder);
 
     const char *str = lcdRichting[currentMotorMode];
-    memcpy(lcdBuffer + 8, (char*)str, strnlen(str, 16));
+    memcpy(lcdBuffer + 9, (char*)str, strnlen(str, 16));
     lcdPrint(lcdBuffer);
 
     lcd.setCursor(0, 1);
