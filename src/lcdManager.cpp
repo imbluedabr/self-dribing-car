@@ -34,16 +34,17 @@ void lcdInit() {
 
 }
 
-
+void lcdPrint(char* str) {
+    while (*str != '\0') {
+    lcd.write(*str++); //Modus aangegeven
+}
 
 void lcdUpdate (struct Task* myTask) {
     
     char lcdBuffer [4];
-    int totalSeconds;
-	int Hours, Minutes, remainingSeconds;
     lcd.setCursor(0, 0);
 
-    BCDConvert(lcdBuffer, TICKS_IN_SECONDS);
+    to_str(lcdBuffer, TICKS_IN_SECONDS);
     for (int i = 0; i < 4 ; i++) {
         lcd.write(lcdBuffer[i]);
     }
@@ -54,18 +55,14 @@ void lcdUpdate (struct Task* myTask) {
     lcd.write(' ');
 
     const char *str = StringStates[currentState.id];
-
-    while (*str != '\0') {
-        lcd.write(*str++); //Modus aangegeven
-    }
+	char stateBuffer[17] = "                ";
+    memcpy(&stateBuffer, str, strlen(str))
+    lcdPrint(stateBuffer);
     lcd.setCursor(0, 1);
 
     str = lcdRichting[currentMotorMode];
-
-    while (*str != '\0') {
-        lcd.write(*str++); //Modus aangegeven
-        
-    }
+	char directionBuffer[17] = "                ";
+    lcdPrint(directionBuffer);
 
 
 

@@ -166,7 +166,7 @@ void inputManagerUpdate() {
 
 void BCDConvert(char* str, uint16_t val) {
     
-    uint_8t temp = 0x0;
+    uint8_t temp = 0x0;
     for (int i = 0; i < 16; i++) {
         // Add 3 to each BCD digit >= 5
         if ((temp & 0xF) >= 5) temp += 0x3;
