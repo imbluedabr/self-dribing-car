@@ -1,5 +1,6 @@
 #include "InputManager.h"
 #include "Drivers/PortExpander.h"
+#include "lcdManager.h"
 
 void prints(const char* str) {
     for (;*str != '\0'; str++) {
@@ -142,6 +143,8 @@ void inputManagerUpdate() {
         prints(buff);
         setMotorTurningFactor(val);
         flushArguments();
+    } else if (strncmp(inputBuffer[0], "stTime", INPUT_WORD_SIZE) == 0) {
+        lcdStoreTime();
     }
 }
 
