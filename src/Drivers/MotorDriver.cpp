@@ -76,10 +76,10 @@ void MotorStateAccelerate(struct MotorStateMachine* channel) {
 
 void MotorStateDecelerate(struct MotorStateMachine* channel) { //decelerate the motor to 0
   int16_t error = -channel->currentSpeed;
-  if (error > MAX_ACCEL) {
-    error = MAX_ACCEL;
-  } else if (error < -MAX_ACCEL) {
-    error = -MAX_ACCEL;
+  if (error > MAX_DECEL) {
+    error = MAX_DECEL;
+  } else if (error < -MAX_DECEL) {
+    error = -MAX_DECEL;
   }
   channel->currentSpeed += error;
   if (channel->currentSpeed < 20) {
